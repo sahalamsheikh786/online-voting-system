@@ -42,4 +42,4 @@ RUN cat storage/logs/laravel.log || true
 EXPOSE 80
 
 # Start Laravel server and tail logs (runtime phase)
-CMD php artisan serve --host=0.0.0.0 --port=80 & tail -f storage/logs/laravel.log
+CMD php artisan serve --host=0.0.0.0 --port=80
