@@ -19,7 +19,7 @@ RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-# Install Laravel dependencies
+# Install Laravel dependencies (optimized for production)
 RUN composer install --no-dev --optimize-autoloader
 
 # Run migrations and clear caches
@@ -28,6 +28,9 @@ RUN php artisan config:clear && \
     php artisan cache:clear && \
     php artisan route:clear && \
     php artisan view:clear
+
+# Debug: print Laravel error log to console
+RUN php artisan tinker --execute="echo file_get_contents(storage_path('logs/laravel.log'));"
 
 # Expose port 80
 EXPOSE 80
