@@ -10,11 +10,11 @@ COPY . .
 # Fix Laravel storage/cache permissions
 RUN chmod -R 775 storage bootstrap/cache
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
+# Install system dependencies (PostgreSQL dev headers + unzip)
+RUN apt-get update && apt-get install -y libpq-dev unzip
 
-# Install unzip for Composer
-RUN apt-get update && apt-get install -y unzip
+# Install PHP extensions (MySQL + PostgreSQL)
+RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
