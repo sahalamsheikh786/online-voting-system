@@ -39,4 +39,5 @@ RUN cat storage/logs/laravel.log || true
 EXPOSE 80
 
 # Start Laravel server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
+CMD php artisan serve --host=0.0.0.0 --port=80 & tail -f storage/logs/laravel.log
+
