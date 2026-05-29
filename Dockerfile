@@ -10,8 +10,13 @@ COPY . .
 # Fix Laravel storage/cache permissions
 RUN chmod -R 775 storage bootstrap/cache
 
-# Install system dependencies (PostgreSQL dev headers + unzip)
-RUN apt-get update && apt-get install -y libpq-dev unzip
+# Install system dependencies (PostgreSQL dev headers + unzip + build tools)
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    unzip \
+    git \
+    pkg-config \
+    build-essential
 
 # Install PHP extensions (MySQL + PostgreSQL)
 RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
@@ -29,15 +34,12 @@ RUN php artisan config:clear && \
     php artisan route:clear && \
     php artisan view:clear
 
-# Debug: print Laravel error log to console
-RUN php artisan tinker --execute="echo file_get_contents(storage_path('logs/laravel.log'));"
-
+# Debug: print Laravel error log to console (build phase)
+RUN php artisan tinker --execute="echo file_get_contents(storage_path('logs/laravel.log'));" || true
 RUN cat storage/logs/laravel.log || true
-
 
 # Expose port 80
 EXPOSE 80
 
-# Start Laravel server
+# Start Laravel server and tail logs (runtime phase)
 CMD php artisan serve --host=0.0.0.0 --port=80 & tail -f storage/logs/laravel.log
-
