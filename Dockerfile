@@ -32,6 +32,9 @@ RUN php artisan config:clear && \
 # Debug: print Laravel error log to console
 RUN php artisan tinker --execute="echo file_get_contents(storage_path('logs/laravel.log'));"
 
+RUN cat storage/logs/laravel.log || true
+
+
 # Expose port 80
 EXPOSE 80
 
