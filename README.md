@@ -40,6 +40,17 @@ Set `APP_KEY` to the output of:
 php artisan key:generate --show
 ```
 
+On first deploy, the startup script creates a default admin if one does not exist:
+
+```text
+Contact number: 9800000000
+Password: admin12345
+Pattern lock: 1258
+```
+
+You can override these with `DEFAULT_ADMIN_CONTACT`, `DEFAULT_ADMIN_PASSWORD`,
+and `DEFAULT_ADMIN_PATTERN` in Render.
+
 <!-- 
 ================ OLD README CONTENT (Laravel default) ================
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
