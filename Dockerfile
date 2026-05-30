@@ -1,45 +1,33 @@
-# Use official PHP + Apache image
-FROM php:8.2-apache
+# Use official PHP CLI image for Laravel's built-in HTTP server on Render.
+FROM php:8.2-cli
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Copy project files
-COPY . .
-
-# Fix Laravel storage/cache permissions
-RUN chmod -R 775 storage bootstrap/cache
-
-# Install system dependencies (PostgreSQL dev headers + unzip + build tools)
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     unzip \
     git \
-    pkg-config \
-    build-essential
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions (MySQL + PostgreSQL)
-RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+COPY composer.json composer.lock ./
 
-# Install Laravel dependencies (optimized for production)
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-progress \
+    --prefer-dist \
+    --optimize-autoloader \
+    --no-scripts
 
-# Run migrations and clear caches
-RUN php artisan migrate --force || true
-RUN php artisan config:clear && \
-    php artisan cache:clear && \
-    php artisan route:clear && \
-    php artisan view:clear
+COPY . .
 
-# Debug: print Laravel error log to console (build phase)
-RUN php artisan tinker --execute="echo file_get_contents(storage_path('logs/laravel.log'));" || true
-RUN cat storage/logs/laravel.log || true
+RUN composer dump-autoload --optimize \
+    && chmod -R 775 storage bootstrap/cache \
+    && chmod +x docker/start.sh
 
-# Expose port 80
-EXPOSE 80
+EXPOSE 10000
 
-# Start Laravel server and tail logs (runtime phase)
-CMD php artisan serve --host=0.0.0.0 --port=80
+CMD ["sh", "docker/start.sh"]

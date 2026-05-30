@@ -14,6 +14,32 @@ This project ensures:
 - Real-time results after polls close  
 - Secure authentication for Admin and Voter  
 
+## Deploying on Render
+This repo includes a Docker-based `render.yaml` Blueprint for Render.
+
+1. Push the project to GitHub.
+2. In Render, create a new Blueprint from the repo.
+3. Render creates a web service and Postgres database, then injects `DB_URL`.
+4. The container runs migrations at startup and binds to Render's `$PORT`.
+
+For a manual Render web service, use Docker and set these environment variables:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+DB_CONNECTION=pgsql
+DB_URL=<your Render Postgres internal connection string>
+SESSION_DRIVER=database
+CACHE_STORE=database
+QUEUE_CONNECTION=database
+```
+
+Set `APP_KEY` to the output of:
+
+```bash
+php artisan key:generate --show
+```
+
 <!-- 
 ================ OLD README CONTENT (Laravel default) ================
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
