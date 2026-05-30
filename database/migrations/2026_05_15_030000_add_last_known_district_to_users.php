@@ -9,36 +9,29 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('last_known_district_name')->nullable()->after('district_id');
-        });
-
-        if (DB::getDriverName() === 'sqlite') {
-            DB::table('users')
-                ->join('districts', 'districts.id', '=', 'users.district_id')
-                ->select('users.id as user_id', 'districts.name as district_name')
-                ->get()
-                ->each(function ($row) {
-                    DB::table('users')
-                        ->where('id', $row->user_id)
-                        ->update(['last_known_district_name' => $row->district_name]);
-                });
-
-            return;
+        if (! Schema::hasColumn('users', 'last_known_district_name')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('last_known_district_name')->nullable()->after('district_id');
+            });
         }
 
-        DB::statement('
-            UPDATE users
-            INNER JOIN districts ON districts.id = users.district_id
-            SET users.last_known_district_name = districts.name
-            WHERE users.district_id IS NOT NULL
-        ');
+        DB::table('users')
+            ->join('districts', 'districts.id', '=', 'users.district_id')
+            ->select('users.id as user_id', 'districts.name as district_name')
+            ->get()
+            ->each(function ($row) {
+                DB::table('users')
+                    ->where('id', $row->user_id)
+                    ->update(['last_known_district_name' => $row->district_name]);
+            });
     }
 
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('last_known_district_name');
-        });
+        if (Schema::hasColumn('users', 'last_known_district_name')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('last_known_district_name');
+            });
+        }
     }
 };
