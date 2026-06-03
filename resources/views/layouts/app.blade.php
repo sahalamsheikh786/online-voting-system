@@ -83,7 +83,7 @@
                     @include('partials.alerts')
                     @yield('content')
                 </div>
-                <footer class="app-footer mt-4">
+                <footer class="app-footer">
                     <div class="app-footer-inner">Your Vote, Your Right — सुरक्षित अनलाइन मतदान प्रणाली।</div>
                 </footer>
             </main>

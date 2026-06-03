@@ -127,6 +127,7 @@
                                                 </span>
                                                 <span class="ballot-body">
                                                     <span class="h4 mb-1 d-block">{{ $candidate->name }}</span>
+                                                    <span class="candidate-party d-block">{{ $candidate->party ?: 'Independent' }}</span>
                                                     <span class="text-secondary d-block mb-3">{{ $candidate->position }}</span>
                                                     <span class="d-flex gap-2">
                                                         @if($candidate->vision_path)
@@ -172,6 +173,7 @@
                                                 </span>
                                                 <span class="ballot-body">
                                                     <span class="h4 mb-1 d-block">{{ $candidate->name }}</span>
+                                                    <span class="candidate-party d-block">{{ $candidate->party ?: 'Independent' }}</span>
                                                     <span class="text-secondary d-block mb-3">{{ $candidate->position }}</span>
                                                     <span class="d-flex gap-2">
                                                         @if($candidate->vision_path)

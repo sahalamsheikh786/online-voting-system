@@ -34,6 +34,7 @@ class CandidateController extends Controller
     {
         return view('candidates.form', [
             'candidate' => new Candidate(),
+            'candidateParties' => Candidate::PARTIES,
             'districts' => District::query()->orderBy('name')->get(),
             'formAction' => route('candidates.store'),
             'formMethod' => 'POST',
@@ -56,6 +57,7 @@ class CandidateController extends Controller
     {
         return view('candidates.form', [
             'candidate' => $candidate,
+            'candidateParties' => Candidate::PARTIES,
             'districts' => District::query()->orderBy('name')->get(),
             'formAction' => route('candidates.update', $candidate),
             'formMethod' => 'PUT',
@@ -95,6 +97,7 @@ class CandidateController extends Controller
             'original_candidate_id' => $candidate->id,
             'district_name' => $candidate->district?->name ?? 'Unknown District',
             'candidate_name' => $candidate->name,
+            'party' => $candidate->party,
             'age' => $candidate->age,
             'position' => $candidate->position,
             'email' => $candidate->email,

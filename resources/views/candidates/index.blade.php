@@ -54,6 +54,7 @@
                     <tr>
                         <th>Image</th>
                         <th>Name</th>
+                        <th>Party</th>
                         <th>Age</th>
                         <th>District</th>
                         <th>Email</th>
@@ -72,6 +73,7 @@
                                 @endif
                             </td>
                             <td>{{ $candidate->name }}</td>
+                            <td>{{ $candidate->party ?: 'Independent' }}</td>
                             <td>{{ $candidate->age }}</td>
                             <td>{{ $candidate->district?->name }}</td>
                             <td>{{ $candidate->email }}</td>
@@ -95,7 +97,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-secondary py-4">No candidates found for this district filter.</td>
+                            <td colspan="8" class="text-center text-secondary py-4">No candidates found for this district filter.</td>
                         </tr>
                     @endforelse
                 </tbody>

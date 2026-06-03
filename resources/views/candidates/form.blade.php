@@ -35,6 +35,15 @@
                         </select>
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label">Candidate Party</label>
+                        <select name="party" class="form-select" required>
+                            <option value="">Select party</option>
+                            @foreach($candidateParties as $party)
+                                <option value="{{ $party }}" @selected(old('party', $candidate->party) === $party)>{{ $party }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label">Candidate Area (District)</label>
                         <select name="district_id" class="form-select">
                             <option value="">Select district</option>

@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Candidate extends Model
 {
+    public const PARTIES = [
+        'Independent',
+        'Unity Party',
+        'Student Union',
+        'Citizen ',
+        'Forward Nepal',
+    ];
+
     protected $fillable = [
         'district_id',
         'name',
