@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/dashboard/{district}/resume-election', [DashboardController::class, 'resumeElection'])->name('dashboard.resume-election');
         Route::delete('/dashboard/{district}', [DashboardController::class, 'destroyElection'])->name('dashboard.destroy-election');
         Route::post('/dashboard/archives/{archive}/restore', [DashboardController::class, 'restoreElection'])->name('dashboard.restore-election');
+        Route::delete('/dashboard/deleted-candidates/{deletedCandidate}', [DashboardController::class, 'destroyDeletedCandidate'])->name('dashboard.destroy-deleted-candidate');
         Route::resource('candidates', CandidateController::class)->except(['show']);
         Route::get('/districts/create', [DistrictController::class, 'create'])->name('districts.create');
         Route::post('/districts', [DistrictController::class, 'store'])->name('districts.store');

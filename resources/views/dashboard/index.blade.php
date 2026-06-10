@@ -420,6 +420,7 @@
                                 <th>Reason</th>
                                 <th>Election Date</th>
                                 <th>Deleted At</th>
+                                <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -432,10 +433,17 @@
                                     <td>{{ ucfirst(str_replace('_', ' ', $deletedCandidate->deleted_reason)) }}</td>
                                     <td>{{ $deletedCandidate->election_started_at?->format('M d, Y h:i A') ?? 'Not started' }} to {{ $deletedCandidate->election_ended_at?->format('M d, Y h:i A') ?? 'Not ended' }}</td>
                                     <td>{{ $deletedCandidate->deleted_at?->format('M d, Y h:i A') }}</td>
+                                    <td class="text-end">
+                                        <form action="{{ route('dashboard.destroy-deleted-candidate', $deletedCandidate) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Do you want to delete candidate history permanently?')">Delete</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center text-secondary py-4">No deleted candidate records yet.</td>
+                                    <td colspan="8" class="text-center text-secondary py-4">No deleted candidate records yet.</td>
                                 </tr>
                             @endforelse
                         </tbody>

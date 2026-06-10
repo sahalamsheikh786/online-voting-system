@@ -307,6 +307,13 @@ class DashboardController extends Controller
         return back()->with('status', "Election card {$archive->district_name} restored successfully. Vote count will start from 0.");
     }
 
+    public function destroyDeletedCandidate(DeletedCandidate $deletedCandidate): RedirectResponse
+    {
+        $deletedCandidate->delete();
+
+        return back()->with('status', 'Candidate history permanently deleted.');
+    }
+
     private function syncElectionStatus(ElectionSetting $setting): ElectionSetting
     {
         if (! $setting->started_at) {
